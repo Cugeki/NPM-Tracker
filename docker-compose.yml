@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  # Baza danych MySQL
+  db:
+    image: mysql:8.0
+    container_name: npm_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: npm_tracker
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+  # Backend PHP + Apache
+  backend:
+    build: ./backend
+    container_name: npm_backend
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
